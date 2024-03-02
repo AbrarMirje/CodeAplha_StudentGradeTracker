@@ -1,27 +1,29 @@
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         ArrayList<Student> studentList = userInput();
         calculateAverage(studentList);
-        highestScorer(studentList);
-        lowestScorer(studentList);
     }
 
-//    Getting grads as input
+    // Getting grades as input
     static ArrayList<Student> userInput() {
         ArrayList<Student> studentList = new ArrayList<>();
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.print("Enter the number of students: ");
-            int range = scanner.nextInt();
-            scanner.nextLine();
-
-            if (range <= 0) {
-                System.out.println("Enter a positive number greater than zero.");
-                return studentList;
-            }
+            int range;
+            do {
+                while (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a valid integer.");
+                    scanner.next(); // discard non-integer input
+                }
+                range = scanner.nextInt();
+                scanner.nextLine(); // consume newline character
+                if (range <= 0) {
+                    System.out.println("Enter a positive number greater than zero.");
+                }
+            } while (range <= 0);
 
             for (int i = 0; i < range; i++) {
                 System.out.print("Enter grade for student " + (i + 1) + " or 'x' to exit: ");
@@ -44,13 +46,11 @@ public class Main {
                     }
                 }
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Input mismatch. Please enter a valid integer.");
         }
         return studentList;
     }
 
-//    Calculating an average of the students grads
+    // Calculating an average of the students grades
     static void calculateAverage(ArrayList<Student> studentList) {
         if (studentList.isEmpty()) {
             System.out.println("No grades to calculate average.");
@@ -64,10 +64,11 @@ public class Main {
 
         double average = (double) sum / studentList.size();
         System.out.println("Average grade: " + average);
+        highestScorer(studentList);
     }
 
-//    Finding the highest scorer
-    static void highestScorer(ArrayList<Student> studentArrayList){
+    // Finding the highest scorer
+    static void highestScorer(ArrayList<Student> studentArrayList) {
         if (studentArrayList.isEmpty()) {
             System.out.println("No grades to calculate highest scorer");
             return;
@@ -80,10 +81,11 @@ public class Main {
             }
         }
         System.out.println("Highest Scorer Grade: " + highestScorer.grade());
+        lowestScorer(studentArrayList);
     }
 
-//    Finding the lowest scorer
-    static void lowestScorer(ArrayList<Student> studentArrayList){
+    // Finding the lowest scorer
+    static void lowestScorer(ArrayList<Student> studentArrayList) {
         if (studentArrayList.isEmpty()) {
             System.out.println("No grades to calculate lowest scorer");
             return;
